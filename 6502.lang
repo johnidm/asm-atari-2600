@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<language id="6502asm" _name="6502 Assembly (Atari 2600)" version="2.0" _section="Sources">
+  <metadata>
+    <property name="mimetypes">text/x-ini-file;application/x-ini-file</property>
+    <property name="globs">*.asm</property>
+  </metadata>
+
+  <styles>
+    <style id="comment" _name="Comment" map-to="def:comment"/>
+    <style id="literal" _name="Literal" map-to="def:type"/>
+    <style id="keyword" _name="Keyword" map-to="def:keyword"/>
+    <style id="commondefines" _name="Common Defines" map-to="def:special-constant"/>
+  </styles>
+  <default-regex-options case-sensitive="false"/>
+  <definitions>
+    <context id="line-comment" style-ref="comment" end-at-line-end="true">
+      <start>;</start>
+    </context>
+    <context id="literal" style-ref="literal">
+      <match>#([^;])+</match>
+    </context>
+    <context id="keywords" style-ref="keyword">
+        <keyword>ADC</keyword>
+        <keyword>AND</keyword>
+        <keyword>ASL</keyword>
+        <keyword>BCC</keyword>
+        <keyword>BCS</keyword>
+        <keyword>BEQ</keyword>
+        <keyword>BIT</keyword>
+        <keyword>BMI</keyword>
+        <keyword>BNE</keyword>
+        <keyword>BPL</keyword>
+        <keyword>BRK</keyword>
+        <keyword>BVC</keyword>
+        <keyword>BVS</keyword>
+        <keyword>CLC</keyword>
+        <keyword>CLD</keyword>
+        <keyword>CLI</keyword>
+        <keyword>CLV</keyword>
+        <keyword>CMP</keyword>
+        <keyword>CPX</keyword>
+        <keyword>CPY</keyword>
+        <keyword>DEC</keyword>
+        <keyword>DEX</keyword>
+        <keyword>DEY</keyword>
+        <keyword>EOR</keyword>
+        <keyword>INC</keyword>
+        <keyword>INX</keyword>
+        <keyword>INY</keyword>
+        <keyword>JMP</keyword>
+        <keyword>JSR</keyword>
+        <keyword>LDA</keyword>
+        <keyword>LDX</keyword>
+        <keyword>LDY</keyword>
+        <keyword>LSR</keyword>
+        <keyword>NOP</keyword>
+        <keyword>ORA</keyword>
+        <keyword>PHA</keyword>
+        <keyword>PHP</keyword>
+        <keyword>PLA</keyword>
+        <keyword>PLP</keyword>
+        <keyword>ROL</keyword>
+        <keyword>ROR</keyword>
+        <keyword>RTI</keyword>
+        <keyword>RTS</keyword>
+        <keyword>SBC</keyword>
+        <keyword>SEC</keyword>
+        <keyword>SED</keyword>
+        <keyword>SEI</keyword>
+        <keyword>STA</keyword>
+        <keyword>STX</keyword>
+        <keyword>STY</keyword>
+        <keyword>TAX</keyword>
+        <keyword>TAY</keyword>
+        <keyword>TSX</keyword>
+        <keyword>TXA</keyword>
+        <keyword>TXS</keyword>
+        <keyword>TYA</keyword>
+    </context>
+    <context id="commondefines" style-ref="commondefines">
+        <keyword>VSYNC</keyword>
+        <keyword>VBLANK</keyword>
+        <keyword>WSYNC</keyword>
+        <keyword>WSYNC</keyword>
+        <keyword>RSYNC</keyword>
+        <keyword>NUSIZ0</keyword>
+        <keyword>NUSIZ1</keyword>
+        <keyword>COLUP0</keyword>
+        <keyword>COLUP1</keyword>
+        <keyword>COLUPF</keyword>
+        <keyword>COLUBK</keyword>
+        <keyword>CTRLPF</keyword>
+        <keyword>REFP0</keyword>
+        <keyword>REFP1</keyword>
+        <keyword>PF0</keyword>
+        <keyword>PF1</keyword>
+        <keyword>PF2</keyword>
+        <keyword>RESP0</keyword>
+        <keyword>RESP1</keyword>
+        <keyword>RESM0</keyword>
+        <keyword>RESM1</keyword>
+        <keyword>RESBL</keyword>
+        <keyword>AUDC0</keyword>
+        <keyword>AUDC1</keyword>
+        <keyword>AUDF0</keyword>
+        <keyword>AUDF1</keyword>
+        <keyword>AUDV0</keyword>
+        <keyword>AUDV1</keyword>
+        <keyword>GRP0</keyword>
+        <keyword>GRP1</keyword>
+        <keyword>ENAM0</keyword>
+        <keyword>ENAM1</keyword>
+        <keyword>ENABL</keyword>
+        <keyword>HMP0</keyword>
+        <keyword>HMP1</keyword>
+        <keyword>HMM0</keyword>
+        <keyword>HMM1</keyword>
+        <keyword>HMBL</keyword>
+        <keyword>VDELP0</keyword>
+        <keyword>VDEL01</keyword>
+        <keyword>VDELP1</keyword>
+        <keyword>VDELBL</keyword>
+        <keyword>RESMP0</keyword>
+        <keyword>RESMP1</keyword>
+        <keyword>HMOVE</keyword>
+        <keyword>HMCLR</keyword>
+        <keyword>CXCLR</keyword>
+        <keyword>CXM0P</keyword>
+        <keyword>CXM1P</keyword>
+        <keyword>CXP0FB</keyword>
+        <keyword>CXP1FB</keyword>
+        <keyword>CXM0FB</keyword>
+        <keyword>CXM1FB</keyword>
+        <keyword>CXBLPF</keyword>
+        <keyword>CXPPMM</keyword>
+        <keyword>INPT0</keyword>
+        <keyword>INPT1</keyword>
+        <keyword>INPT2</keyword>
+        <keyword>INPT3</keyword>
+        <keyword>INPT4</keyword>
+        <keyword>INPT5</keyword>
+        <keyword>SWCHA</keyword>
+        <keyword>SWACNT</keyword>
+        <keyword>SWCHB</keyword>
+        <keyword>INTIM</keyword>
+        <keyword>TIM1T</keyword>
+        <keyword>TIM8T</keyword>
+        <keyword>TIM64T</keyword>
+        <keyword>TIM1024T</keyword>
+    </context>
+    <context id="6502asm">
+      <include>
+        <context ref="line-comment"/>
+        <context ref="literal"/>
+        <context ref="keywords"/>
+        <context ref="commondefines"/>
+      </include>
+    </context>
+  </definitions>
+</language>
