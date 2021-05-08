@@ -297,7 +297,7 @@ Reset:
     sta    $00,x            ; 4
     txs                     ; 2
     inx                     ; 2
-    bne    .loopClear       ; 2³
+    bne    .loopClear       ; 2Â³
 
     jsr    InitGame         ; 6
 
@@ -313,11 +313,11 @@ MainLoop:
   ENDIF
     sta    colorLst,x       ; 4                 store color in list
     cpx    #4               ; 2
-    bcs    .skipTIA         ; 2³
+    bcs    .skipTIA         ; 2Â³
     sta    COLUP0,x         ; 4                 store color in TIA too
 .skipTIA:
     dex                     ; 2
-    bpl    .loopColors      ; 2³
+    bpl    .loopColors      ; 2Â³
 
 ; process underground objects (scorpion, wall):
 ; Only one object at a time is visible, but two different
@@ -328,14 +328,14 @@ MainLoop:
     ldx    #<Scorpion0      ; 2
     lda    xPosScorpion     ; 3
     lsr                     ; 2                 animate scorpion
-    bcc    .scorpion0       ; 2³
+    bcc    .scorpion0       ; 2Â³
     ldx    #<Scorpion1      ; 2
 .scorpion0:
     lda    #<Nothing        ; 2
     sta    wallPatPtr       ; 3                 clear ladder data pointer
 
     lda    ladderFlag       ; 3                 ladder in scene
-    beq    .noLadder        ; 2³                 no, skip
+    beq    .noLadder        ; 2Â³                 no, skip
     ldy    #<WallColor      ; 2                  yes,..
     ldx    #<Wall           ; 2
     stx    wallPatPtr       ; 3                 ..load pointers at ladder data
@@ -347,21 +347,21 @@ MainLoop:
 ; calculate pits, quicksand etc.:
     ldx    sceneType        ; 3
     lda    LadderTab,x      ; 4                 blue swamp?
-    bpl    .noPit           ; 2³                 yes, skip
+    bpl    .noPit           ; 2Â³                 yes, skip
     lda    colorLst+4       ; 3                  no, black tar pit
     sta    colorLst+8       ; 3
 .noPit:
     ldy    #0               ; 2                 disable quicksand
     lda    GroundTypeTab,x  ; 4
-    bpl    .noQuickSand     ; 2³
+    bpl    .noQuickSand     ; 2Â³
     lda    yPosHarry        ; 3
     cmp    #55              ; 2                 Harry in underground?
-    bcs    .doQuickSand     ; 2³                 yes, animate quicksand
+    bcs    .doQuickSand     ; 2Â³                 yes, animate quicksand
     cmp    #JUNGLE_GROUND+1 ; 2                 stop quicksand animation when..
-    bcs    .stopQuickSand   ; 2³                ..Harry is falling into the pit
+    bcs    .stopQuickSand   ; 2Â³                ..Harry is falling into the pit
 .doQuickSand:
     lda    noGameScroll     ; 3                 game running?
-    bne    .stopQuickSand   ; 2³                 no, skip
+    bne    .stopQuickSand   ; 2Â³                 no, skip
     lda    frameCnt         ; 3
     lsr                     ; 2
     lsr                     ; 2
@@ -397,7 +397,7 @@ MainLoop:
     sta    PF2QuickSand     ; 3
     dey                     ; 2
     dex                     ; 2
-    bpl    .loopPF2Lst      ; 2³
+    bpl    .loopPF2Lst      ; 2Â³
 .stopQuickSand:
 
 ; calculate x-positioning values:
@@ -405,10 +405,10 @@ MainLoop:
     lda    #0               ; 2
   IF SCREENSAVER
     ldy    SS_Delay         ; 3                 game running?
-    bmi    .skipHarryPos    ; 2³                 no, don't draw Harry
+    bmi    .skipHarryPos    ; 2Â³                 no, don't draw Harry
   ELSE
     ldy    noGameScroll     ;                   TODO: bugfix, wall isn't drawn
-    bne    .skipHarryPos    ; 2³                 no, don't draw Harry
+    bne    .skipHarryPos    ; 2Â³                 no, don't draw Harry
   ENDIF
 
 .loopPos:
@@ -419,7 +419,7 @@ MainLoop:
     sty    HMCoarseLst,x    ; 4
     stx    hmblSum          ; 3                 -> hmblSum = 0
     dex                     ; 2
-    bpl    .loopPos         ; 2³
+    bpl    .loopPos         ; 2Â³
 
 ; load branches x-positioning values:
     ldx    treePat          ; 3
@@ -444,11 +444,11 @@ MainLoop:
     sta    objPatLst,x      ; 4
     dey                     ; 2
     dex                     ; 2
-    bpl    .loopObjLst      ; 2³
+    bpl    .loopObjLst      ; 2Â³
 
 .waitTim:
     lda    INTIM            ; 4
-    bne    .waitTim         ; 2³
+    bne    .waitTim         ; 2Â³
     sta    WSYNC            ; 3
 ;---------------------------------------
     sta    HMOVE            ; 3
@@ -469,7 +469,7 @@ MainLoop:
     lda    #<Space          ; 2
     sta    digitPtr         ; 3
     ldy    digitPtr+2       ; 3
-    bne    .noSpace         ; 2³                replaced leading zero in timer with space
+    bne    .noSpace         ; 2Â³                replaced leading zero in timer with space
     sta    digitPtr+2       ; 3
 .noSpace:
     lda    #<DoublePoint    ; 2
@@ -505,7 +505,7 @@ MainLoop:
     nop                     ; 2
 .waitPos0:
     dex                     ; 2
-    bpl    .waitPos0        ; 2³
+    bpl    .waitPos0        ; 2Â³
     sta    RESP0            ; 3
     lda    posLeftBranch    ; 3
     sta    HMP0             ; 3
@@ -513,7 +513,7 @@ MainLoop:
     sta    HMP1             ; 3
 .waitPos1:
     dey                     ; 2
-    bpl    .waitPos1        ; 2³
+    bpl    .waitPos1        ; 2Â³
     sta    RESP1            ; 3
     sta    WSYNC            ; 3
 ;---------------------------------------
@@ -533,13 +533,13 @@ MainLoop:
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
     sta    HMCLR            ; 3
-    bcc    .noMove0         ; 2³
+    bcc    .noMove0         ; 2Â³
     lda    hmblDir          ; 3
     sta    HMBL             ; 3
 .noMove0:
     lda    #0               ; 2
     cpy    #9               ; 2                 draw branches in lower 9 lines
-    bcs    .noBranch        ; 2³
+    bcs    .noBranch        ; 2Â³
     tya                     ; 2
     lsr                     ; 2
     lda    BranchTab,y      ; 4
@@ -549,7 +549,7 @@ MainLoop:
     sta    HMOVE            ; 3
     sta    GRP0             ; 3
     sta    GRP1             ; 3
-    bcs    .noChangePF      ; 2³                two line resolution for leaves
+    bcs    .noChangePF      ; 2Â³                two line resolution for leaves
     lda    PFLeavesTab,x    ; 4                 x = 0..3
     inx                     ; 2
     sta    PF0              ; 3
@@ -557,7 +557,7 @@ MainLoop:
     sta    PF2              ; 3
 .noChangePF:
     dey                     ; 2
-    bne    .loopBranches    ; 2³
+    bne    .loopBranches    ; 2Â³
 
 ; prepare Kernel 2: draw liana, disable branches, draw logs:
     ldx    treePat          ; 3
@@ -565,7 +565,7 @@ MainLoop:
     lda    hmblSum          ; 3
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
-    bcc    .noMove1         ; 2³
+    bcc    .noMove1         ; 2Â³
     ldy    hmblDir          ; 3
 .noMove1:
     sty    HMBL             ; 3
@@ -596,7 +596,7 @@ MainLoop:
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
     lda    #$00             ; 2
-    bcc    .noMove2         ; 2³
+    bcc    .noMove2         ; 2Â³
     lda    hmblDir          ; 3
 .noMove2:
     sta    HMBL             ; 3
@@ -605,7 +605,7 @@ MainLoop:
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
     lda    #$00             ; 2
-    bcc    .noMove3         ; 2³
+    bcc    .noMove3         ; 2Â³
     lda    hmblDir          ; 3
 .noMove3:
     sta    WSYNC            ; 3
@@ -614,7 +614,7 @@ MainLoop:
     ldy    #0               ; 2                 do the coarse positions
     sty    temp1,x          ; 4
     ldy    HMCoarseLst,x    ; 4                 position at the very left?
-    bne    .waitPos         ; 2³                 no, skip
+    bne    .waitPos         ; 2Â³                 no, skip
     ldy    #$60             ; 2                  yes, use special code
     sty    temp1,x          ; 4
     sta    RESP0,x          ; 4
@@ -623,7 +623,7 @@ MainLoop:
 
 .waitPos:
     dey                     ; 2                 "normal" position
-    bne    .waitPos         ; 2³
+    bne    .waitPos         ; 2Â³
     sta.w  HMBL             ; 4
     sta    RESP0,x          ; 4
 .endPos0:
@@ -631,7 +631,7 @@ MainLoop:
 ;---------------------------------------
     sta    HMOVE            ; 3
     dex                     ; 2
-    bpl    .loopLianaPos    ; 2³
+    bpl    .loopLianaPos    ; 2Â³
 
     jsr    DrawLiana        ;31/33
     lda    HMFineLst        ; 3
@@ -668,7 +668,7 @@ MainLoop:
     sta    hmblSum          ; 3
     lda    #$00             ; 2
     sta    HMCLR            ; 3
-    bcc    .noMove4         ; 2³
+    bcc    .noMove4         ; 2Â³
     lda    hmblDir          ; 3
 .noMove4:
     sta    HMBL             ; 3
@@ -678,7 +678,7 @@ MainLoop:
     sta    HMOVE            ; 3
     sta    COLUP0           ; 3
     dex                     ; 2
-    bpl    .loopLianaHarry  ; 2³
+    bpl    .loopLianaHarry  ; 2Â³
 
     stx    VDELP0           ; 3                 enable vertical delay for Harry
     inx                     ; 2
@@ -699,13 +699,13 @@ MainLoop:
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
     lda    #$00             ; 2
-    bcc    .noMove5         ; 2³
+    bcc    .noMove5         ; 2Â³
     lda    hmblDir          ; 3
 .noMove5:
     sta    HMBL             ; 3
     dey                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry       ; 2³
+    bcs    .skipHarry       ; 2Â³
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -722,12 +722,12 @@ MainLoop:
     sta    COLUP0           ; 3
     lda    #DISABLE         ; 2
     cpx    lianaBottom      ; 3                 bottom of liana reached?
-    bcs    .skipDisable     ; 2³                 no, skip
+    bcs    .skipDisable     ; 2Â³                 no, skip
     sta    ENABL            ; 3                  yes, disable liana
 .skipDisable:
     sta    GRP1             ; 3
     dex                     ; 2
-    bpl    .loopEndLiana    ; 2³
+    bpl    .loopEndLiana    ; 2Â³
 
     jsr    DrawHarry        ;27/37
     ldx    CXP0FB-$30       ; 3
@@ -762,7 +762,7 @@ MainLoop:
     lda    PF2Lst,x         ; 4                 draw pits
     sta    PF2              ; 3
     dex                     ; 2
-    bpl    .loopGround      ; 2³=31/32
+    bpl    .loopGround      ; 2Â³=31/32
 
     tya                     ; 2                 calculate and save..
     sec                     ; 2                 ..Harry's pattern..
@@ -789,7 +789,7 @@ MainLoop:
     lda    (objPatPtr),y    ; 5
     sta    GRP1             ; 3
     dey                     ; 2
-    bmi    .exitHoles       ; 2³                exit loop here
+    bmi    .exitHoles       ; 2Â³                exit loop here
     lda    PF2Lst,x         ; 4
     sta    PF2              ; 3
     inx                     ; 2
@@ -799,7 +799,7 @@ MainLoop:
     lda    #0               ; 2
     sta    GRP0             ; 3                 clear Harry again (JTZ: superfluous)
     ldx    HMCoarseLst+2    ; 3
-    bne    .notZero         ; 2³
+    bne    .notZero         ; 2Â³
     lda    #$60             ; 2                 special HMOV when scorpion is at the very left
 .notZero:
     sta    temp3            ; 3
@@ -874,7 +874,7 @@ ShowDigits SUBROUTINE
     sty    GRP1             ; 3
     sta    GRP0             ; 3
     dec    temp2            ; 5
-    bpl    .loopDigits      ; 2³
+    bpl    .loopDigits      ; 2Â³
 
     sta    WSYNC            ; 3
 ;---------------------------------------
@@ -889,7 +889,7 @@ DrawHarry SUBROUTINE
 ; called from kernel:
     dey                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipDraw        ; 2³
+    bcs    .skipDraw        ; 2Â³
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -928,7 +928,7 @@ CalcPosX SUBROUTINE
     clc                     ; 2
     adc    temp1            ; 3
     cmp    #$0f             ; 2
-    bcc    SkipIny         ; 2³
+    bcc    SkipIny         ; 2Â³
     sbc    #$0f             ; 2
     iny                     ; 2
 SkipIny:
@@ -945,7 +945,7 @@ DrawLiana SUBROUTINE
     adc    hmblAdd          ; 3
     sta    hmblSum          ; 3
     lda    #$00             ; 2
-    bcc    .noMove6         ; 2³
+    bcc    .noMove6         ; 2Â³
     lda    hmblDir          ; 3
 .noMove6:
     sta    HMBL             ; 3
@@ -980,7 +980,7 @@ DecScoreHi:                 ;                decrease scoreHi by 1
     sta    scoreMed         ; 3
     lda    scoreHi          ; 3
     sbc    #$00             ; 2
-    bcs    .notZero         ; 2³
+    bcs    .notZero         ; 2Â³
     lda    #$00             ; 2             limit score at zero
     sta    scoreMed         ; 3
     sta    scoreLo          ; 3
@@ -1031,7 +1031,7 @@ ContKernel:
     sta.w  HMBL             ; 4
     cpy    #HARRY_H         ; 2
     sta    RESBL            ; 3
-    bcs    .skipHarry1      ; 2³+1
+    bcs    .skipHarry1      ; 2Â³+1
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -1047,15 +1047,15 @@ ContKernel:
 ;---------------------------------------
     sta    HMOVE            ; 3
     sta    COLUP0           ; 3
-    beq    .wait1           ; 2³
+    beq    .wait1           ; 2Â³
 .wait1:
-    beq    .wait2           ; 2³
+    beq    .wait2           ; 2Â³
 .wait2:
     lda    #0               ; 2
     sta    GRP1             ; 3
 .loopWait:
     dex                     ; 2
-    bpl    .loopWait        ; 2³
+    bpl    .loopWait        ; 2Â³
     sta.w  RESP1            ; 4
     sta    HMCLR            ; 3
     sta    WSYNC            ; 3
@@ -1063,7 +1063,7 @@ ContKernel:
     sta    HMOVE            ; 3
     dey                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry2      ; 2³
+    bcs    .skipHarry2      ; 2Â³
     lda    (harryColPtr),y  ; 5
   IF SCREENSAVER
     eor    SS_XOR           ; 3
@@ -1085,7 +1085,7 @@ ContKernel:
 .loopLadderTop:
     dey                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry3      ; 2³
+    bcs    .skipHarry3      ; 2Â³
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -1106,7 +1106,7 @@ ContKernel:
     and    ladderFlag       ; 3
     sta    ENABL            ; 3
     dex                     ; 2
-    bmi    .exitLadderTop   ; 2³                exit loop
+    bmi    .exitLadderTop   ; 2Â³                exit loop
     lda    temp3            ; 3
     sta    HMCLR            ; 3
     sta    HMP1             ; 3                 position scorpion at the very left
@@ -1128,7 +1128,7 @@ ContKernel:
     dey                     ; 2
     sty    temp1            ; 3
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry4      ; 2³
+    bcs    .skipHarry4      ; 2Â³
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -1171,7 +1171,7 @@ ContKernel:
     txa                     ; 2
     tay                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry5      ; 2³+1
+    bcs    .skipHarry5      ; 2Â³+1
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -1199,7 +1199,7 @@ ContKernel:
     and    ladderFlag       ; 3
     sta    ENABL            ; 3
     dec    temp2            ; 5
-    bpl    .loopLadder      ; 2³+1
+    bpl    .loopLadder      ; 2Â³+1
     nop                     ; 2
 ; Kernel 9 (16 lines): draw Harry, scorpion or the bottom of wall and ladder:
 .loopUnderground:
@@ -1207,7 +1207,7 @@ ContKernel:
     txa                     ; 2
     tay                     ; 2
     cpy    #HARRY_H         ; 2
-    bcs    .skipHarry6      ; 2³
+    bcs    .skipHarry6      ; 2Â³
     lda    (harryPatPtr),y  ; 5
     sta    GRP0             ; 3
     lda    (harryColPtr),y  ; 5
@@ -1235,7 +1235,7 @@ ContKernel:
     and    ladderFlag       ; 3
     sta.w  ENABL            ; 4
     dec    temp3            ; 5
-    bpl    .loopUnderground ; 2³
+    bpl    .loopUnderground ; 2Â³
     bmi    .exitKernel      ; 3
 
 .skipHarry5:
@@ -1270,17 +1270,17 @@ ContKernel:
     ldy    #COPYRIGHT_H/2   ; 2
     lda    noGameScroll     ; 3
     ldx    soundIdx         ; 3
-    beq    .noSound0        ; 2³
+    beq    .noSound0        ; 2Â³
     lda    #0               ; 2
 .noSound0:
     lsr                     ; 2
     lsr                     ; 2
     lsr                     ; 2
     cmp    #20              ; 2                 scroll-animation
-    bcs    .ok              ; 2³
+    bcs    .ok              ; 2Â³
     ldy    #0               ; 2
     cmp    #12              ; 2
-    bcc    .ok              ; 2³
+    bcc    .ok              ; 2Â³
     sbc    #12              ; 2
     tay                     ; 2
 .ok:
@@ -1296,15 +1296,15 @@ ContKernel:
     sbc    #COPYRIGHT_H     ; 2
     dex                     ; 2
     dex                     ; 2
-    bpl    .loopCopyright   ; 2³
+    bpl    .loopCopyright   ; 2Â³
 
     lda    colorLst+4       ; 3
     sta    COLUPF           ; 3
     jsr    ShowDigits       ; 6
     lda    noGameScroll     ; 3                 game running?
-    beq    .endCopyright    ; 2³                 yes, no more scrolling
+    beq    .endCopyright    ; 2Â³                 yes, no more scrolling
     dec    noGameScroll     ; 5                  no, scoll message
-    bne    .endCopyright    ; 2³
+    bne    .endCopyright    ; 2Â³
     dec    noGameScroll     ; 5                 avoid #0
 .endCopyright:
 
@@ -1322,10 +1322,10 @@ ContKernel:
 ; check for killed Harry:
     lda    soundIdx         ; 3
     cmp    #SOUND_FALLING-1 ; 2                 dead tune at end of playing?
-    bne    .slipDecrease    ; 2³                 no, skip decrease
+    bne    .slipDecrease    ; 2Â³                 no, skip decrease
 ; Harry is loosing a live:
     lda    livesPat         ; 3                 any more lives?
-    beq    .slipDecrease    ; 2³                 no, skip decrease
+    beq    .slipDecrease    ; 2Â³                 no, skip decrease
   IF TRAINER
     FILL_NOP 4
   ELSE
@@ -1344,7 +1344,7 @@ ContKernel:
     ldx    #JUMP_LEN        ; 2
     lda    yPosHarry        ; 3
     cmp    #71              ; 2                 Harry at underground?
-    bcc    LF5D2            ; 2³                 no, skip
+    bcc    LF5D2            ; 2Â³                 no, skip
     ldy    #64              ; 2                  yes, lower Harry restart y-position
     lda    #SCREENWIDTH/2-4 ; 2                 position scorpion at center..
     sta    xPosScorpion     ; 3                 ..when Harry restarts at underground
@@ -1356,15 +1356,15 @@ LF5D2:
 ; *** sound routines: ***
     ldy    #0               ; 2
     ldx    soundIdx         ; 3
-    beq    .noSound         ; 2³
+    beq    .noSound         ; 2Â³
     inc    soundDelay       ; 5
     lda    soundDelay       ; 3
     and    #$03             ; 2                 next note every 4th frame
-    bne    .skipNext        ; 2³
+    bne    .skipNext        ; 2Â³
     inc    soundIdx         ; 5                 play next note
 .skipNext:
     lda    SoundTab-1,x     ; 4
-    bpl    .contSound       ; 2³
+    bpl    .contSound       ; 2Â³
     sty    soundIdx         ; 3                 stop current sound
 .contSound:
     sta    AUDF0            ; 3
@@ -1376,21 +1376,21 @@ LF5D2:
 
 ; check if Harry has fallen into a hole or pit:
     lda    climbPos         ; 3                 Harry at ladder?
-    bne    .exitBounds      ; 2³+1               yes, skip bounds check
+    bne    .exitBounds      ; 2Â³+1               yes, skip bounds check
     lda    yPosHarry        ; 3
     cmp    #JUNGLE_GROUND   ; 2                 Harry at ground?
-    bne    .exitBounds      ; 2³                 no, skip bounds check
+    bne    .exitBounds      ; 2Â³                 no, skip bounds check
     ldx    sceneType        ; 3
     cpx    #CROCO_SCENE     ; 2                 croco scene?
-    bne    .noCroco1        ; 2³                 no, skip
+    bne    .noCroco1        ; 2Â³                 no, skip
     bit    frameCnt         ; 3                 open croco jaws?
-    bpl    .contCroco       ; 2³                 yes, skip
+    bpl    .contCroco       ; 2Â³                 yes, skip
     dex                     ; 2                  no, use other values
     bne    .contCroco       ; 3
 
 .noCroco1:
     cpx    #HOLE3_SCENE+2   ; 2                 scene with hole(s) or ???? ?
-    bcc    .contCroco       ; 2³                 yes, skip
+    bcc    .contCroco       ; 2Â³                 yes, skip
     ldx    #HOLE3_SCENE+1   ; 2                  no, limit scene type
 .contCroco:
     txa                     ; 2
@@ -1401,21 +1401,21 @@ LF5D2:
     ldy    #3               ; 2                 check up to 4 bounds
 .loopBounds:
     lda    HoleBoundsTab,x  ; 4
-    beq    .exitBounds      ; 2³                no more bounds!
+    beq    .exitBounds      ; 2Â³                no more bounds!
     clc                     ; 2
     adc    xPosQuickSand    ; 3
     cmp    xPosHarry        ; 3                 Harry left of hole/pit?
-    bcs    .inBounds        ; 2³                 yes, bound ok
+    bcs    .inBounds        ; 2Â³                 yes, bound ok
     lda    HoleBoundsTab+1,x; 4
     sec                     ; 2
     sbc    xPosQuickSand    ; 3
     cmp    xPosHarry        ; 3                 Harry right of hole/pit?
-    bcs    .outOfBounds     ; 2³                 no, Harry is falling into
+    bcs    .outOfBounds     ; 2Â³                 no, Harry is falling into
 .inBounds:
     inx                     ; 2
     inx                     ; 2
     dey                     ; 2
-    bpl    .loopBounds      ; 2³
+    bpl    .loopBounds      ; 2Â³
     bmi    .exitBounds      ; 3
 
 .outOfBounds:
@@ -1426,13 +1426,13 @@ LF5D2:
     stx    oldJoystick      ; 3                 x=$1f -> no direction
 .exitBounds:
     lda    jumpMode         ; 3                 JTZ: superfluous code?
-    bne    .waitTim         ; 2³
+    bne    .waitTim         ; 2Â³
     bit    hitLiana         ; 3                 collison with liana
-    bvc    .waitTim         ; 2³                 no, skip
+    bvc    .waitTim         ; 2Â³                 no, skip
     lda    jumpIndex        ; 3                 currently jumping?
-    beq    .waitTim         ; 2³                 no, skip
+    beq    .waitTim         ; 2Â³                 no, skip
     ldx    atLiana          ; 3                 Harry already at liana?
-    bne    .waitTim         ; 2³                 yes, skip
+    bne    .waitTim         ; 2Â³                 yes, skip
     stx    jumpIndex        ; 3                  no, stop jump
     inx                     ; 2
     stx    atLiana          ; 3                 enter "liana mode"
@@ -1441,7 +1441,7 @@ LF5D2:
 ; wait for end of vertical blank:
 .waitTim:
     lda    INTIM            ; 4
-    bne    .waitTim         ; 2³
+    bne    .waitTim         ; 2Â³
 
 ; start vertical sync:
     sta    AUDC1            ; 3
@@ -1456,22 +1456,22 @@ LF5D2:
   IF SCREENSAVER
 ; process screensaver code:
     inc    SS_DelayLo       ; 5
-    bne    .skipSS_Delay    ; 2³
+    bne    .skipSS_Delay    ; 2Â³
     inc    SS_Delay         ; 5
-    bne    .skipSS_Delay    ; 2³
+    bne    .skipSS_Delay    ; 2Â³
     sec                     ; 2
     ror    SS_Delay         ; 5
 .skipSS_Delay:
     ldy    #$ff             ; 2
     lda    SWCHB            ; 4
     and    #BW_MASK         ; 2
-    bne    .colorMode       ; 2³
+    bne    .colorMode       ; 2Â³
     ldy    #$0f             ; 2
 .colorMode:
     tya                     ; 2
     ldy    #$00             ; 2                 disable changing colors
     bit    SS_Delay         ; 3
-    bpl    .noScreenSaver   ; 2³
+    bpl    .noScreenSaver   ; 2Â³
     and    #$f7             ; 2                 avoid bright colors in screensaver mode
     ldy    SS_Delay         ; 3
 .noScreenSaver:
@@ -1499,7 +1499,7 @@ LF5D2:
     lsr                     ; 2
     sta    joystick         ; 3
     cmp    #NO_MOVE         ; 2
-    beq    .noMove          ; 2³
+    beq    .noMove          ; 2Â³
     ldx    #0               ; 2
   IF SCREENSAVER
     stx    SS_Delay         ; 3                 reset screensaver
@@ -1508,14 +1508,14 @@ LF5D2:
   ENDIF
     lda    timerHi          ; 3
     cmp    #STARTTIME       ; 2                 timer at 20:00?
-    bne    .noMove          ; 2³                 no, skip
+    bne    .noMove          ; 2Â³                 no, skip
     stx    noGameScroll     ; 3                  yes, game is running
 .noMove:
 
 ; read RESET switch:
     lda    SWCHB            ; 4
     lsr                     ; 2                 RESET pressed?
-    bcs    .noReset         ; 2³                 no, skip
+    bcs    .noReset         ; 2Â³                 no, skip
   IF SCREENSAVER
     ldx    #SS_Delay        ; 2                  yes, load init-values offset..
   ELSE
@@ -1525,7 +1525,7 @@ LF5D2:
 
 .noReset:
     lda    noGameScroll     ; 3                 game running?
-    beq    .processHarry    ; 2³                 yes, process Harry
+    beq    .processHarry    ; 2Â³                 yes, process Harry
     jmp    ProcessObjects   ; 3                  no, skip Harry, goto objects
 
 ; *** process Harry: ***
@@ -1537,9 +1537,9 @@ LF5D2:
     asl                     ; 2
     rol    random2          ; 5
     lda    climbPos         ; 3                 Harry at ladder?
-    bne    .endDoJump       ; 2³+1               no, skip continue jump
+    bne    .endDoJump       ; 2Â³+1               no, skip continue jump
     ldx    jumpIndex        ; 3                 currently jumping?
-    beq    .endDoJump       ; 2³+1               no, skip continue jump
+    beq    .endDoJump       ; 2Â³+1               no, skip continue jump
     lda    yPosHarry        ; 3                  yes, calculate..
     sec                     ; 2                 ..new y-position of Harry
     sbc    JumpTab-1,x      ; 4
@@ -1547,29 +1547,29 @@ LF5D2:
     inc    jumpIndex        ; 5
     lda    jumpIndex        ; 3
     cmp    #JUMP_LEN+1      ; 2
-    bcc    .indexOk         ; 2³
+    bcc    .indexOk         ; 2Â³
     lda    #JUMP_LEN        ; 2
     sta    jumpIndex        ; 3
 .indexOk:
 
     ldx    yPosHarry        ; 3
     cpx    #JUNGLE_GROUND   ; 2                 Harry at jungle ground?
-    beq    .stopJump        ; 2³+1               yes, stop any jump
+    beq    .stopJump        ; 2Â³+1               yes, stop any jump
     ldy    ladderFlag       ; 3                 ladder in scene?
-    beq    .skipFalling     ; 2³+1               no, skip falling
+    beq    .skipFalling     ; 2Â³+1               no, skip falling
     cpx    #JUNGLE_GROUND+2 ; 2
-    bne    .skipFalling     ; 2³+1
+    bne    .skipFalling     ; 2Â³+1
     lda    #SOUND_FALLING   ; 2                 Harry is falling into a hole
     sta    soundIdx         ; 3                 start falling-sound
     lda    #$00             ; 2
     jsr    DecScoreHi       ; 6                 subtract 100 points from score
 .skipFalling:
     cpx    #UNDER_GROUND    ; 2                 is Harry at underground bottom?
-    beq    .stopJump        ; 2³                 yes, stop any jump
+    beq    .stopJump        ; 2Â³                 yes, stop any jump
     cpx    #54              ; 2                 has Harry reached the falling limit?
-    bne    .endDoJump       ; 2³                 no, skip
+    bne    .endDoJump       ; 2Â³                 no, skip
     tya                     ; 2                 ladder in scene?
-    bne    .endDoJump       ; 2³                 no, skip kill
+    bne    .endDoJump       ; 2Â³                 no, skip kill
     jmp    KilledHarry      ; 3                  yes, Harry is killed
 
 .stopJump:
@@ -1580,14 +1580,14 @@ LF5D2:
 
 ; countdown timer:
     dec    timerLo          ; 5
-    bpl    .inTime          ; 2³
+    bpl    .inTime          ; 2Â³
     lda    #FRAMERATE-1     ; 2
     sta    timerLo          ; 3
     sed                     ; 2
     lda    timerMed         ; 3
     sec                     ; 2
     sbc    #$01             ; 2
-    bcs    .contMinute      ; 2³
+    bcs    .contMinute      ; 2Â³
     lda    #$59             ; 2                 start next minute
 .contMinute:
     sta    timerMed         ; 3
@@ -1601,13 +1601,13 @@ LF5D2:
     cld                     ; 2
     lda    timerHi          ; 3                 any more..
     ora    timerMed         ; 3                 ..time left?
-    bne    .inTime          ; 2³                 yes, continue
+    bne    .inTime          ; 2Â³                 yes, continue
     dec    noGameScroll     ; 5                  no, stop game
 .inTime:
 
 ; check collisions between Harry and object:
     lda    CXPPMM-$30       ; 3                 Harry collided?
-    bmi    .contCollision   ; 2³                 yes, process collisions
+    bmi    .contCollision   ; 2Â³                 yes, process collisions
     lda    #0               ; 2                  no, skip collisions
     sta    patOfsHarry      ; 3
     beq    .endCollision    ; 3
@@ -1615,19 +1615,19 @@ LF5D2:
 .contCollision:
     lda    yPosHarry        ; 3
     cmp    #64              ; 2                 Harry at underground?
-    bcs    .checkWallHit    ; 2³                 yes, check wall
+    bcs    .checkWallHit    ; 2Â³                 yes, check wall
     lda    atLiana          ; 3                  no, Harry at liana?
-    bne    .endCollision    ; 2³                 yes, skip
+    bne    .endCollision    ; 2Â³                 yes, skip
     lda    sceneType        ; 3
     cmp    #CROCO_SCENE     ; 2                 croco in scene?
-    beq    .endCollision    ; 2³                 yes, skip
+    beq    .endCollision    ; 2Â³                 yes, skip
     cmp    #TREASURE_SCENE  ; 2                 treasue in scene?
-    bne    .noTreasure1     ; 2³                 no, skip
+    bne    .noTreasure1     ; 2Â³                 no, skip
     jsr    CheckTreasures   ; 6                  yes, check if treasure was found before
-    bne    .endCollision    ; 2³
+    bne    .endCollision    ; 2Â³
     sta    treasureBits,x   ; 4                 clear treasure bit
     dec    treasureCnt      ; 5                 all treasures found
-    bpl    .incScore        ; 2³                 no, skip
+    bpl    .incScore        ; 2Â³                 no, skip
     dec    noGameScroll     ; 5                  yes, game finished!!!
 
 ; treasure found, increase score:
@@ -1653,25 +1653,25 @@ LF5D2:
 .noTreasure1:
     lda    objectType       ; 3
     cmp    #ID_FIRE         ; 2                 fire or cobra?
-    bcc    .hitLogs         ; 2³                 no, hit by rolling logs
+    bcc    .hitLogs         ; 2Â³                 no, hit by rolling logs
 .noWallHit:
     jmp    KilledHarry      ; 3                 Harry is killed
 
 .hitLogs:
     lda    climbPos         ; 3                 Harry at ladder?
-    beq    .notAtLadder     ; 2³                 no, skip push
+    beq    .notAtLadder     ; 2Â³                 no, skip push
     inc    climbPos         ; 5                  yes, push down Harry
     bne    .decScore        ; 3
 
 .notAtLadder:
     lda    yPosHarry        ; 3
     cmp    #JUNGLE_GROUND+1 ; 2
-    bcs    .endCollision    ; 2³
+    bcs    .endCollision    ; 2Â³
     lda    #5               ; 2
     sta    patOfsHarry      ; 3
     lda    objectType       ; 3
     and    #$04             ; 2
-    bne    .decScore        ; 2³
+    bne    .decScore        ; 2Â³
     lda    #NO_MOVE         ; 2
     sta    joystick         ; 3
 .decScore:
@@ -1682,16 +1682,16 @@ LF5D2:
 .checkWallHit:
     lda    wallPatPtr       ; 3
     cmp    #<Wall           ; 2                 wall displayed in scene?
-    bne    .noWallHit       ; 2³                 no, skip
+    bne    .noWallHit       ; 2Â³                 no, skip
     lda    #$01             ; 2                  yes, make some noise
     sta    AUDC1            ; 3
     lda    xPosHarry        ; 3                 determine where Harry hit the wall
     cmp    #140             ; 2                 right wall from the right?
-    bcs    .hitFromRight    ; 2³                 yes, continue
+    bcs    .hitFromRight    ; 2Â³                 yes, continue
     cmp    #13              ; 2                 left wall from the left?
-    bcc    .hitFromLeft     ; 2³                 yes, continue
+    bcc    .hitFromLeft     ; 2Â³                 yes, continue
     cmp    #80              ; 2                 left or right wall?
-    bcs    .hitFromLeft     ; 2³
+    bcs    .hitFromLeft     ; 2Â³
 .hitFromRight:
     inc    xPosHarry        ; 5                 bounce back one pixel and..
     ldx    #MOVE_RIGHT      ; 2                 ..change direction to right
@@ -1710,17 +1710,17 @@ LF5D2:
     asl                     ; 2
     lda    lianaPosHi       ; 3
     rol                     ; 2
-    bpl    .skipNeg         ; 2³
+    bpl    .skipNeg         ; 2Â³
     eor    #$ff             ; 2
 .skipNeg:
     sta    hmblAdd          ; 3                 store absolute value (-> angle of liana)
     ldy    #$f0             ; 2                 liana moves right
   IF OPTIMIZE
-    bcs    .skipMoveLeft    ; 2³
+    bcs    .skipMoveLeft    ; 2Â³
     FILL_NOP 2
   ELSE
     lda    lianaPosHi       ; 3
-    bmi    .skipMoveLeft    ; 2³
+    bmi    .skipMoveLeft    ; 2Â³
   ENDIF
     ldy    #$10             ; 2                 liana moves left
 .skipMoveLeft:
@@ -1731,7 +1731,7 @@ LF5D2:
     clc                     ; 2
     adc    lianaPosLo       ; 3
     sta    lianaPosLo       ; 3
-    bcc    .skipAddHi       ; 2³
+    bcc    .skipAddHi       ; 2Â³
     lda    lianaPosHi       ; 3
     adc    #3               ; 2
     sta    lianaPosHi       ; 3
@@ -1742,7 +1742,7 @@ LF5D2:
     lsr                     ; 2                 ..as it's looking ok :)
     lsr                     ; 2
     cmp    #6-1             ; 2
-    bcs    .limitBottom     ; 2³                limit bottom of liana to 6
+    bcs    .limitBottom     ; 2Â³                limit bottom of liana to 6
     lda    #6               ; 2
 .limitBottom:
     adc    #4               ; 2
@@ -1750,21 +1750,21 @@ LF5D2:
 
 ; check for a new jump:
     lda    jumpIndex        ; 3                 currently jumping?
-    beq    .notJumping      ; 2³                 no,
+    beq    .notJumping      ; 2Â³                 no,
     cmp    #3               ; 2                 jump just started?
-    bcc    .saveDir         ; 2³                 yes, save joystick direction
+    bcc    .saveDir         ; 2Â³                 yes, save joystick direction
 .notJumping:
     ora    climbPos         ; 3                 Harry at ladder..
     ora    patOfsHarry      ; 3                 ..or Harry kneeing..
     ora    atLiana          ; 3                 ..or Harry at liana?
-    bne    .noFire          ; 2³                 yes, skip new jump
+    bne    .noFire          ; 2Â³                 yes, skip new jump
     lda    INPT4-$30        ; 3
     and    #%10000000       ; 2
     cmp    fireButton       ; 3
     sta    fireButton       ; 3
-    beq    .noFire          ; 2³
+    beq    .noFire          ; 2Â³
     tax                     ; 2
-    bmi    .noFire          ; 2³
+    bmi    .noFire          ; 2Â³
 ; start jump:
     lda    #1               ; 2                 start jumping sequence
     sta    jumpIndex        ; 3
@@ -1783,17 +1783,17 @@ LF5D2:
 
 ; check for jumping of liana:
     lda    atLiana          ; 3                 Harry at liana?
-    beq    .skipJumpOff     ; 2³                 no, skip jump of liana
+    beq    .skipJumpOff     ; 2Â³                 no, skip jump of liana
     lda    joystick         ; 3
     and    #~[$f0|MOVE_DOWN]; 2                 joystick down?
-    bne    .skipJumpOff     ; 2³                 no, skip
+    bne    .skipJumpOff     ; 2Â³                 no, skip
     sta    atLiana          ; 3                  yes, leave "liana mode"
     lda    #JUMP_LEN/2      ; 2                 start jump down
     sta    jumpIndex        ; 3
     sta    jumpMode         ; 3
     ldy    #MOVE_RIGHT      ; 2
     lda    hmblDir          ; 3                 jump in liana direction
-    bmi    .jumpRight       ; 2³
+    bmi    .jumpRight       ; 2Â³
     ldy    #MOVE_LEFT       ; 2
 .jumpRight:
     sty    oldJoystick      ; 3
@@ -1801,30 +1801,30 @@ LF5D2:
 
 ; check for starting climbing ladder:
     lda    climbPos         ; 3                 Harry at ladder?
-    bne    .endStartClimb   ; 2³                 yes, skip
+    bne    .endStartClimb   ; 2Â³                 yes, skip
     lda    ladderFlag       ; 3                 ladder in scene?
-    beq    .endStartClimb   ; 2³                 no, skip
+    beq    .endStartClimb   ; 2Â³                 no, skip
     lda    xPosHarry        ; 3
     sec                     ; 2
     sbc    #68              ; 2
     cmp    #15              ; 2                 Harry at x-position of ladder (+/-7)?
-    bcs    .endStartClimb   ; 2³                 no, skip
+    bcs    .endStartClimb   ; 2Â³                 no, skip
     lda    yPosHarry        ; 3                  yes,
     cmp    #84              ; 2                 Harry near bottom of underground
-    bcc    .skipClimbUp     ; 2³                 no, skip
+    bcc    .skipClimbUp     ; 2Â³                 no, skip
     lda    joystick         ; 3                  yes,
     lsr                     ; 2                 joystick up?
-    bcs    .skipClimbUp     ; 2³                 no, skip
+    bcs    .skipClimbUp     ; 2Â³                 no, skip
     lda    #LADDER_BOTTOM-1 ; 2                  yes, start climbing up the ladder
     bne    .contClimbUp     ; 3
 
 .skipClimbUp:
     lda    yPosHarry        ; 3
     cmp    #JUNGLE_GROUND   ; 2                 Harry at jungle-ground?
-    bne    .endStartClimb   ; 2³                 no, skip
+    bne    .endStartClimb   ; 2Â³                 no, skip
     lda    joystick         ; 3
     and    #~[$f0|MOVE_DOWN]; 2                 joystick down?
-    bne    .endStartClimb   ; 2³                 no, skip
+    bne    .endStartClimb   ; 2Â³                 no, skip
     lda    #LADDER_TOP+1    ; 2                  yes, start climbing down the ladder
 .contClimbUp:
     sta    climbPos         ; 3
@@ -1834,14 +1834,14 @@ LF5D2:
 
 ; move Harry when swinging at liana:
     lda    atLiana          ; 3                 Harry at liana?
-    beq    .skipSwingHarry  ; 2³                 no, skip moving Harry
+    beq    .skipSwingHarry  ; 2Â³                 no, skip moving Harry
 ; set x-position of Harry:
     lda    hmblAdd          ; 3
     lsr                     ; 2
     lsr                     ; 2
     clc                     ; 2
     ldy    hmblDir          ; 3
-    bmi    .isNeg           ; 2³
+    bmi    .isNeg           ; 2Â³
     eor    #$ff             ; 2                 negate
     sec                     ; 2
 .isNeg:
@@ -1856,30 +1856,30 @@ LF5D2:
 
 ; check Harry climbing ladder:
     lda    climbPos         ; 3                 Harry at ladder?
-    beq    .endClimbLadder  ; 2³                 no, skip
+    beq    .endClimbLadder  ; 2Â³                 no, skip
     lda    #0               ; 2
     sta    jumpIndex        ; 3
     lda    frameCnt         ; 3
     and    #$07             ; 2                 climb every 8th frame
-    bne    .skipAnimClimb   ; 2³
+    bne    .skipAnimClimb   ; 2Â³
     lda    joystick         ; 3
     lsr                     ; 2                 joystick up?
-    bcs    .notClimbUp      ; 2³                 no, skip
+    bcs    .notClimbUp      ; 2Â³                 no, skip
     dec    climbPos         ; 5                  yes, climb up
 .notClimbUp:
     lsr                     ; 2                 joystick down?
-    bcs    .notClimbDown    ; 2³                 no, skip
+    bcs    .notClimbDown    ; 2Â³                 no, skip
     inc    climbPos         ; 5                  yes, climb down
 .notClimbDown:
     lda    climbPos         ; 3
     cmp    #LADDER_TOP      ; 2                 top reached?
-    bcs    .skipLadderTop   ; 2³                 no, skip
+    bcs    .skipLadderTop   ; 2Â³                 no, skip
     lda    #NO_MOVE         ; 2
     sta    oldJoystick      ; 3
     lda    #LADDER_TOP      ; 2
 .skipLadderTop:
     cmp    #LADDER_BOTTOM   ; 2                 bottom reached?
-    bcc    .skipLadderBottom; 2³                 no, skip
+    bcc    .skipLadderBottom; 2Â³                 no, skip
     lda    #0               ; 2                 remove Harry from ladder
     ldx    #ID_STANDING     ; 2
     stx    patIdHarry       ; 3
@@ -1889,7 +1889,7 @@ LF5D2:
     sta    climbPos         ; 3
 .skipAnimClimb:
     lda    climbPos         ; 3                 Harry at ladder?
-    beq    .endClimbLadder  ; 2³                 no, skip
+    beq    .endClimbLadder  ; 2Â³                 no, skip
     asl                     ; 2                  yes, calculate y-position of Harry
     sec                     ; 2
     rol                     ; 2
@@ -1899,41 +1899,41 @@ LF5D2:
 
 ; animate running Harry:
     lda    atLiana          ; 3                 Harry at liana?
-    bne    .endHarryId      ; 2³+1               yes, skip running
+    bne    .endHarryId      ; 2Â³+1               yes, skip running
     lda    climbPos         ; 3
     cmp    #LADDER_TOP+1    ; 2                 Harry at ladder bottom?
-    bcs    .endHarryId      ; 2³+1               no, skip running
+    bcs    .endHarryId      ; 2Â³+1               no, skip running
     lda    frameCnt         ; 3                 animate Harry (every 4th frame)
     and    #$03             ; 2
     tax                     ; 2
     lsr                     ; 2
-    bcs    .endHarryId      ; 2³+1
+    bcs    .endHarryId      ; 2Â³+1
     lda    oldJoystick      ; 3
     ldy    jumpIndex        ; 3                 currently jumping?
-    bne    .isJumping       ; 2³                 yes, use old joystick input
+    bne    .isJumping       ; 2Â³                 yes, use old joystick input
     lda    joystick         ; 3                  no, use new joystick input
 .isJumping:
     lsr                     ; 2
     lsr                     ; 2
     lsr                     ; 2                 joystick left?
-    bcs    .skipLeft        ; 2³+1               no, skip
+    bcs    .skipLeft        ; 2Â³+1               no, skip
     dec    xPosHarry        ; 5
     ldy    #REFLECT         ; 2
     sty    reflectHarry     ; 3
     cpx    #0               ; 2                 4th frame?
-    bne    .skipAnimLeft    ; 2³                 no, skip animation
+    bne    .skipAnimLeft    ; 2Â³                 no, skip animation
     dec    patIdHarry       ; 5
 .skipAnimLeft:
     jmp    .endAnimHarry    ; 3
 
 .skipLeft:
     lsr                     ; 2                 joystick right?
-    bcs    .endAnimHarry    ; 2³                 no, skip
+    bcs    .endAnimHarry    ; 2Â³                 no, skip
     inc    xPosHarry        ; 5
     ldy    #NOREFLECT       ; 2
     sty    reflectHarry     ; 3
     cpx    #0               ; 2                 4th frame?
-    bne    .endAnimHarry    ; 2³                 no, skip animation
+    bne    .endAnimHarry    ; 2Â³                 no, skip animation
     dec    patIdHarry       ; 5
 .endAnimHarry:
 
@@ -1941,44 +1941,44 @@ LF5D2:
     ldx    #0               ; 2                 move one scene
     lda    yPosHarry        ; 3
     cmp    #64              ; 2                 Harry at underground?
-    bcc    .oneScene        ; 2³                 yes, move one scene
+    bcc    .oneScene        ; 2Â³                 yes, move one scene
     ldx    #2               ; 2                  no, move three scenes
 .oneScene:
     lda    xPosHarry        ; 3
     cmp    #XMIN_HARRY      ; 2
-    bcs    .notAtLeft       ; 2³
+    bcs    .notAtLeft       ; 2Â³
     jsr    LeftRandom       ; 6
     lda    #XMAX_HARRY      ; 2
     sta    xPosHarry        ; 3
 .notAtLeft:
     cmp    #XMAX_HARRY+1    ; 2
-    bcc    .notAtRight      ; 2³
+    bcc    .notAtRight      ; 2Â³
     jsr    RightRandom      ; 6
     lda    #XMIN_HARRY      ; 2
     sta    xPosHarry        ; 3
 .notAtRight:
     lda    patIdHarry       ; 3                 illegal animation id?
-    bpl    .endHarryId      ; 2³                 no, skip
+    bpl    .endHarryId      ; 2Â³                 no, skip
     lda    #ID_RUNNING4     ; 2                  yes, start new animation sequence
     sta    patIdHarry       ; 3
 .endHarryId:
 
 ; move the scorpion towards harry:
     lda    ladderFlag       ; 3                 ladder in scene?
-    bne    .noMoveScorpion  ; 2³                 yes, skip scorpion
+    bne    .noMoveScorpion  ; 2Â³                 yes, skip scorpion
     ldx    #NOREFLECT       ; 2
     lda    xPosHarry        ; 3
     sec                     ; 2
     sbc    xPosScorpion     ; 3
-    beq    .noMoveScorpion  ; 2³
-    bcs    .rightOfScorpion ; 2³
+    beq    .noMoveScorpion  ; 2Â³
+    bcs    .rightOfScorpion ; 2Â³
     ldx    #REFLECT         ; 2
 .rightOfScorpion:
     lda    frameCnt         ; 3
     and    #$07             ; 2                 move scorpion every 8th frame
-    bne    .endMoveScorpion ; 2³
+    bne    .endMoveScorpion ; 2Â³
     inc    xPosScorpion     ; 5
-    bcs    .endMoveScorpion ; 2³
+    bcs    .endMoveScorpion ; 2Â³
     dec    xPosScorpion     ; 5
     dec    xPosScorpion     ; 5
 .endMoveScorpion:
@@ -1987,11 +1987,11 @@ LF5D2:
 
     lda    climbPos         ; 3
     cmp    #LADDER_TOP      ; 2                 Harry at ladder top?
-    bne    .notAtTop        ; 2³                 no, skip horizontal move
+    bne    .notAtTop        ; 2Â³                 no, skip horizontal move
     lda    joystick         ; 3
     and    #JOY_HORZ        ; 2
     cmp    #JOY_HORZ        ; 2                 joystick left or right?
-    beq    .notAtTop        ; 2³                 no, skip
+    beq    .notAtTop        ; 2Â³                 no, skip
     lda    joystick         ; 3
     sta    oldJoystick      ; 3
     lda    #1               ; 2
@@ -2005,41 +2005,41 @@ LF5D2:
     lda    joystick         ; 3
     and    #JOY_HORZ        ; 2
     cmp    #JOY_HORZ        ; 2                 joystick left or right??
-    bne    .skipStanding    ; 2³                 yes, skip
+    bne    .skipStanding    ; 2Â³                 yes, skip
     ldx    #ID_STANDING     ; 2                  no, draw standing Harry
 .skipStanding:
     lda    yPosHarry        ; 3
     cmp    #31              ; 2                 Harry just jumping of top of ladder?
-    bne    .notOfTop        ; 2³                 no, skip
+    bne    .notOfTop        ; 2Â³                 no, skip
     ldx    #3               ; 2                  yes, draw diffenret shape
     bne    .contPatId       ; 3
 
 .notOfTop:
     cmp    #UNDER_GROUND    ; 2
-    beq    .contPatId       ; 2³
+    beq    .contPatId       ; 2Â³
     cmp    #JUNGLE_GROUND   ; 2
-    beq    .contPatId       ; 2³
+    beq    .contPatId       ; 2Â³
     ldx    #ID_KNEEING      ; 2
-    bcc    .contPatId       ; 2³
+    bcc    .contPatId       ; 2Â³
     cmp    #60              ; 2
-    bcs    .contPatId       ; 2³
+    bcs    .contPatId       ; 2Â³
     lda    climbPos         ; 3                 Harry at ladder?
-    bne    .contPatId       ; 2³                 yes, skip
+    bne    .contPatId       ; 2Â³                 yes, skip
     ldx    #ID_STANDING     ; 2                  no, draw standing Harry
 .contPatId:
     lda    atLiana          ; 3                 Harry at liana?
-    beq    .skipStanding2   ; 2³                 no, skip
+    beq    .skipStanding2   ; 2Â³                 no, skip
     ldx    #ID_SWINGING     ; 2                  yes, draw swinging Harry
 .skipStanding2:
     lda    climbPos         ; 3                 Harry at ladder?
-    beq    .noAnimClimb     ; 2³                 no, skip
+    beq    .noAnimClimb     ; 2Â³                 no, skip
     and    #%1              ; 2                  yes, animate climbing
     clc                     ; 2
     adc    #ID_CLIMBING     ; 2
     tax                     ; 2
 .noAnimClimb:
     lda    patOfsHarry      ; 3                 Harry hit by logs (kneeing)?
-    beq    .skipKneeing     ; 2³                 no, skip
+    beq    .skipKneeing     ; 2Â³                 no, skip
     ldx    #ID_KNEEING      ; 2                  yes, draw kneeing Harry
 .skipKneeing:
     stx    patIdHarry       ; 3
@@ -2049,7 +2049,7 @@ LF5D2:
     sta    harryPatPtr+1    ; 3
     lda    #<RunColTab      ; 2
     cpx    #ID_SWINGING+1   ; 2
-    bcc    .runColors       ; 2³
+    bcc    .runColors       ; 2Â³
     lda    #<ClimbColTab    ; 2
 .runColors:
     sta    harryColPtr      ; 3
@@ -2061,9 +2061,9 @@ ProcessObjects SUBROUTINE
     lda    LianaTab,y       ; 4
     sta    ENABL            ; 3
     cpy    #TREASURE_SCENE  ; 2                 treasure in scene?
-    bne    .noTreasure      ; 2³                 yes, skip
+    bne    .noTreasure      ; 2Â³                 yes, skip
     jsr    CheckTreasures   ; 6
-    beq    .withTreasure    ; 2³
+    beq    .withTreasure    ; 2Â³
     ldx    #ID_NOTHING      ; 2
     bne    .noTreasure      ; 3
 
@@ -2090,10 +2090,10 @@ ProcessObjects SUBROUTINE
 ; special processing for crocodiles:
     ldy    sceneType        ; 3
     lda    CrocoTab,y       ; 4
-    beq    .noCroco         ; 2³
+    beq    .noCroco         ; 2Â³
     lda    #<Croco0         ; 2
     bit    frameCnt         ; 3                 open croco jaws?
-    bpl    .skipClosed      ; 2³                 yes, skip
+    bpl    .skipClosed      ; 2Â³                 yes, skip
     lda    #<Croco1         ; 2                  no, use other shape
 .skipClosed:
     sta    objPatPtr        ; 3
@@ -2105,11 +2105,11 @@ ProcessObjects SUBROUTINE
     sta    nusize1          ; 3
 .noCroco:
     lda    noGameScroll     ; 3                 game running?
-    bne    .skipLogs        ; 2³                 no, skip
+    bne    .skipLogs        ; 2Â³                 no, skip
     lda    CrocoTab,y       ; 4                 crocos in scene?
-    bne    .skipLogs        ; 2³                 no, skip
+    bne    .skipLogs        ; 2Â³                 no, skip
     cpy    #TREASURE_SCENE  ; 2                 treasure in scene?
-    beq    .skipLogs        ; 2³                 yes, skip
+    beq    .skipLogs        ; 2Â³                 yes, skip
 
 ; animate, bounce and move rolling logs:
     lda    xPosObject       ; 3
@@ -2123,12 +2123,12 @@ ProcessObjects SUBROUTINE
     sta    objPatPtr        ; 3
     lda    frameCnt         ; 3
     lsr                     ; 2                 move logs every 2nd frame
-    bcs    .skipLogs        ; 2³
+    bcs    .skipLogs        ; 2Â³
     lda    objectType       ; 3
     cmp    #ID_STATIONARY   ; 2                 rolling logs scene?
-    bcs    .skipLogs        ; 2³                 no, skip move
+    bcs    .skipLogs        ; 2Â³                 no, skip move
     ldx    xPosObject       ; 3
-    bne    .skipResetLogs   ; 2³
+    bne    .skipResetLogs   ; 2Â³
     ldx    #SCREENWIDTH     ; 2
 .skipResetLogs:
     dex                     ; 2
@@ -2140,13 +2140,13 @@ ProcessObjects SUBROUTINE
     inx                     ; 2                 x = 0
 .loopSpace:
     lda    digitPtr,x       ; 4
-    bne    .exitSpace       ; 2³
+    bne    .exitSpace       ; 2Â³
     lda    #<Space          ; 2
     sta    digitPtr,x       ; 4
     inx                     ; 2
     inx                     ; 2
     cpx    #9               ; 2
-    bcc    .loopSpace       ; 2³
+    bcc    .loopSpace       ; 2Â³
 .exitSpace:
     jmp    MainLoop         ; 3
 
@@ -2160,7 +2160,7 @@ InitGame SUBROUTINE
     lda    #$10             ; 2
     sta    AUDF0,x          ; 4
     dex                     ; 2
-    bpl    .loopInitSound   ; 2³
+    bpl    .loopInitSound   ; 2Â³
 
     stx    noGameScroll     ; 3                 game is stopped
     sta    xPosHarry        ; 3
@@ -2177,7 +2177,7 @@ InitGame SUBROUTINE
     lda    InitTab,x        ; 4
     sta    harryPatPtr,x    ; 4
     dex                     ; 2
-    bpl    .loopInit        ; 2³
+    bpl    .loopInit        ; 2Â³
 
     lda    #FRAMERATE-1     ; 2
     sta    timerLo          ; 3
@@ -2192,7 +2192,7 @@ InitGame SUBROUTINE
 LeftRandom SUBROUTINE
 ; generate new random scene on the left:
 .loopRandom:
-; random' = random >> 1 | (bit4^bit5^bit6^bit1) * $80
+; random' = random >> 1 | (bit4^bit5^bit6^bit0) * $80
     lda    random           ; 3
     asl                     ; 2
     eor    random           ; 3
@@ -2205,7 +2205,7 @@ LeftRandom SUBROUTINE
     lsr                     ; 2
     ror    random           ; 5
     dex                     ; 2
-    bpl    .loopRandom      ; 2³
+    bpl    .loopRandom      ; 2Â³
 ContRandom:
     lda    #124             ; 2                 x-position of logs, fire, cobra or treasure
     sta    xPosObject       ; 3
@@ -2228,12 +2228,12 @@ ContRandom:
     ldy    #NOLADDER        ; 2
     lda    sceneType        ; 3
     cmp    #HOLE3_SCENE+1   ; 2                 scene with hole(s)?
-    bcs    .setFlag         ; 2³                 no, skip
+    bcs    .setFlag         ; 2Â³                 no, skip
     ldy    #WITHLADDER      ; 2                  yes, enable ladder
     ldx    #17              ; 2                 left wall x-position
     lda    random           ; 3
     asl                     ; 2                 position of the wall? (bit 7)
-    bcc    .setFlag         ; 2³                 left, skip
+    bcc    .setFlag         ; 2Â³                 left, skip
     ldx    #136             ; 2                  right wall x-position
 .setFlag:
     sty    ladderFlag       ; 3
@@ -2241,7 +2241,7 @@ ContRandom:
 
     ldx    sceneType        ; 3
     lda    CrocoTab,x       ; 4
-    beq    .noCrocos        ; 2³
+    beq    .noCrocos        ; 2Â³
     lda    #60              ; 2                 x-position crocos
     sta    xPosObject       ; 3
 .noCrocos:
@@ -2633,7 +2633,7 @@ SetDigitPtrs SUBROUTINE
     tay                     ; 2
     jsr    BCD2DigitPtrs    ; 6
     dex                     ; 2
-    bpl    .loopSet         ; 2³
+    bpl    .loopSet         ; 2Â³
     rts                     ; 6
 
 KilledHarry SUBROUTINE
@@ -3022,7 +3022,7 @@ RightRandom SUBROUTINE
     asl                     ; 2
     rol    random           ; 5
     dex                     ; 2
-    bpl    .loopRandom      ; 2³
+    bpl    .loopRandom      ; 2Â³
     jmp    ContRandom       ; 3
 
 ; low pointer to harry data:
