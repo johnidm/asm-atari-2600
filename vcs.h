@@ -41,50 +41,37 @@ VERSION_VCS         = 105
 ;                          in uninitialised segments.  This allows a changeable base
 ;                          address architecture.
 ; 1.0	22/MAR/2003		Initial release
-
-
 ;-------------------------------------------------------------------------------
-
 ; TIA_BASE_ADDRESS
 ; The TIA_BASE_ADDRESS defines the base address of access to TIA registers.
 ; Normally 0, the base address should (externally, before including this file)
 ; be set to $40 when creating 3F-bankswitched (and other?) cartridges.
 ; The reason is that this bankswitching scheme treats any access to locations
 ; < $40 as a bankswitch.
-
 			IFNCONST TIA_BASE_ADDRESS
 TIA_BASE_ADDRESS	= 0
 			ENDIF
-
 ; Note: The address may be defined on the command-line using the -D switch, eg:
 ; dasm.exe code.asm -DTIA_BASE_ADDRESS=$40 -f3 -v5 -ocode.bin
 ; *OR* by declaring the label before including this file, eg:
 ; TIA_BASE_ADDRESS = $40
 ;   include "vcs.h"
-
 ; Alternate read/write address capability - allows for some disassembly compatibility
 ; usage ; to allow reassembly to binary perfect copies).  This is essentially catering
 ; for the mirrored ROM hardware registers.
-
 ; Usage: As per above, define the TIA_BASE_READ_ADDRESS and/or TIA_BASE_WRITE_ADDRESS
 ; using the -D command-line switch, as required.  If the addresses are not defined,
 ; they defaut to the TIA_BASE_ADDRESS.
-
      IFNCONST TIA_BASE_READ_ADDRESS
 TIA_BASE_READ_ADDRESS = TIA_BASE_ADDRESS
      ENDIF
-
      IFNCONST TIA_BASE_WRITE_ADDRESS
 TIA_BASE_WRITE_ADDRESS = TIA_BASE_ADDRESS
      ENDIF
-
 ;-------------------------------------------------------------------------------
-
 			SEG.U TIA_REGISTERS_WRITE
 			ORG TIA_BASE_WRITE_ADDRESS
-
 	; DO NOT CHANGE THE RELATIVE ORDERING OF REGISTERS!
-
 VSYNC       ds 1    ; $00   0000 00x0   Vertical Sync Set-Clear
 VBLANK		ds 1	; $01   xx00 00x0   Vertical Blank Set-Clear
 WSYNC		ds 1	; $02   ---- ----   Wait for Horizontal Blank
@@ -130,12 +117,9 @@ RESMP1      ds 1    ; $29   0000 00x0   Reset Missle 1 to Player 1
 HMOVE       ds 1    ; $2A   ---- ----   Apply Horizontal Motion
 HMCLR       ds 1    ; $2B   ---- ----   Clear Horizontal Move Registers
 CXCLR       ds 1    ; $2C   ---- ----   Clear Collision Latches
-
 ;-------------------------------------------------------------------------------
-
 			SEG.U TIA_REGISTERS_READ
 			ORG TIA_BASE_READ_ADDRESS
-
                     ;											bit 7   bit 6
 CXM0P       ds 1    ; $00       xx00 0000       Read Collision  M0-P1   M0-P0
 CXM1P       ds 1    ; $01       xx00 0000                       M1-P0   M1-P1
@@ -151,26 +135,18 @@ INPT2       ds 1    ; $0A       x000 0000       Read Pot Port 2
 INPT3       ds 1    ; $0B       x000 0000       Read Pot Port 3
 INPT4       ds 1    ; $0C		x000 0000       Read Input (Trigger) 0
 INPT5       ds 1	; $0D		x000 0000       Read Input (Trigger) 1
-
 ;-------------------------------------------------------------------------------
-
 			SEG.U RIOT
 			ORG $280
-
 	; RIOT MEMORY MAP
-
 SWCHA       ds 1    ; $280      Port A data register for joysticks:
 					;			Bits 4-7 for player 1.  Bits 0-3 for player 2.
-
 SWACNT      ds 1    ; $281      Port A data direction register (DDR)
 SWCHB       ds 1    ; $282		Port B data (console switches)
 SWBCNT      ds 1    ; $283      Port B DDR
 INTIM       ds 1    ; $284		Timer output
-
 TIMINT  	ds 1	; $285
-
 		; Unused/undefined registers ($285-$294)
-
 			ds 1	; $286
 			ds 1	; $287
 			ds 1	; $288
@@ -185,16 +161,12 @@ TIMINT  	ds 1	; $285
 			ds 1	; $291
 			ds 1	; $292
 			ds 1	; $293
-
 TIM1T       ds 1    ; $294		set 1 clock interval
 TIM8T       ds 1    ; $295      set 8 clock interval
 TIM64T      ds 1    ; $296      set 64 clock interval
 T1024T      ds 1    ; $297      set 1024 clock interval
-
 ;-------------------------------------------------------------------------------
 ; The following required for back-compatibility with code which does not use
 ; segments.
-
             SEG
-
 ; EOF
